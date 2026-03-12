@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin · Outils IA sur mesure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0e;
+    --surface: #161616;
+    --border: #272727;
+    --text: #f0ece4;
+    --muted: #7a7672;
+    --accent: #e8c547;
+    --accent2: #4fd1a5;
+    --accent3: #f07b5c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* NAV */
+  nav {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: rgba(14,14,14,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .logo {
+    font-family: 'Instrument Serif', serif;
+    font-size: 20px;
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .logo span {
+    color: var(--accent);
+  }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #0e0e0e;
+    padding: 8px 20px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    transition: all 0.2s;
+  }
+
+  .nav-cta:hover {
+    background: #f5d460;
+    transform: translateY(-1px);
+  }
+
+  /* HERO */
+  .hero {
+    padding: 100px 0 80px;
+    position: relative;
+  }
+
+  .hero-tag {
+    display: inline-block;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    margin-bottom: 40px;
+    text-transform: uppercase;
+  }
+
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(42px, 6vw, 72px);
+    line-height: 1.1;
+    font-weight: 400;
+    margin-bottom: 32px;
+    max-width: 700px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero h1 .strike {
+    text-decoration: line-through;
+    color: var(--muted);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 500px;
+    margin-bottom: 52px;
+    line-height: 1.8;
+  }
+
+  .hero-sub strong {
+    color: var(--text);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0e0e0e;
+    padding: 14px 32px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    background: #f5d460;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232,197,71,0.2);
+  }
+
+  .btn-ghost {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--text);
+  }
+
+  /* MARQUEE */
+  .marquee-wrap {
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    overflow: hidden;
+    margin: 60px 0;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 48px;
+    animation: marquee 18s linear infinite;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .marquee-item .dot {
+    color: var(--accent);
+    margin-right: 48px;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* PROBLEM SECTION */
+  .problem {
+    padding: 80px 0;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 60px;
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .problem-item {
+    background: var(--surface);
+    padding: 28px 32px;
+    border-left: 3px solid transparent;
+    transition: border-color 0.2s;
+  }
+
+  .problem-item:hover {
+    border-left-color: var(--accent3);
+  }
+
+  .problem-item .icon {
+    font-size: 22px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .problem-item p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+  }
+
+  .problem-item strong {
+    color: var(--text);
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+  /* SERVICES */
+  .services {
+    padding: 80px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .service-card {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+  }
+
+  .service-card:last-child {
+    border-bottom: none;
+  }
+
+  .service-number {
+    font-size: 72px;
+    font-family: 'Instrument Serif', serif;
+    color: var(--border);
+    line-height: 1;
+    font-style: italic;
+    user-select: none;
+  }
+
+  .service-content h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .service-content h3 span {
+    color: var(--accent);
+  }
+
+  .service-desc {
+    color: var(--muted);
+    margin-bottom: 24px;
+    font-size: 13px;
+    line-height: 1.9;
+  }
+
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tag {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 12px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .tag.highlight {
+    border-color: var(--accent2);
+    color: var(--accent2);
+  }
+
+  /* HOW IT WORKS */
+  .process {
+    padding: 80px 0;
+    background: var(--surface);
+    margin: 0 -32px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .process .container {
+    padding: 0;
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .step {
+    background: var(--bg);
+    padding: 32px 24px;
+    position: relative;
+  }
+
+  .step-num {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    margin-bottom: 20px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .step h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+  }
+
+  .step p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  /* MANIFESTO */
+  .manifesto {
+    padding: 100px 0;
+    text-align: center;
+  }
+
+  .manifesto-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-style: italic;
+    line-height: 1.4;
+    max-width: 660px;
+    margin: 0 auto 40px;
+    color: var(--text);
+  }
+
+  .manifesto-quote em {
+    color: var(--accent);
+    font-style: normal;
+  }
+
+  .manifesto-sub {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 80px 0 100px;
+    border-top: 1px solid var(--border);
+  }
+
+  .cta-box {
+    background: var(--surface);
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(232,197,71,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .cta-box h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: clamp(28px, 4vw, 44px);
+    font-weight: 400;
+    margin-bottom: 16px;
+    max-width: 500px;
+    line-height: 1.2;
+  }
+
+  .cta-box h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .cta-box p {
+    color: var(--muted);
+    margin-bottom: 36px;
+    font-size: 13px;
+    max-width: 400px;
+  }
+
+  .cta-note {
+    margin-top: 20px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+  }
+
+  footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer p {
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  /* FORM */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 12px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent);
+  }
+
+  .form-input::placeholder {
+    color: var(--border);
+  }
+
+  .form-textarea {
+    height: 120px;
+    resize: vertical;
+  }
+
+  select.form-input {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7672' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 40px;
+  }
+
+  select.form-input option {
+    background: var(--surface);
+  }
+
+  #submit-btn {
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    margin-top: 8px;
+  }
+
+  .form-error {
+    color: var(--accent3);
+    font-size: 12px;
+    margin-top: 12px;
+  }
+
+  .success-msg {
+    text-align: center;
+    padding: 40px 0;
+  }
+
+  .success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--accent2);
+    color: var(--accent2);
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .success-msg h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 8px;
+  }
+
+  .success-msg p {
+    color: var(--muted);
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 640px) {
+    .form-row { grid-template-columns: 1fr; }
+  }
+
+  /* ANIMATIONS */
+  .fade-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .problem-grid { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .service-card { grid-template-columns: 1fr; gap: 16px; }
+    .service-number { font-size: 48px; }
+    .cta-box { padding: 36px 28px; }
+    footer .container { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="container">
+    <a href="#" class="logo">Martin<span>@FXience</span></a>
+    <a href="#contact" class="nav-cta">Prendre contact →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag">Consultant IA & Automatisation</div>
+    <h1>
+      Vos outils <em>enfin</em><br>
+      <span class="strike">compliqués</span> <em>adaptés</em><br>
+      à votre réalité.
+    </h1>
+    <p class="hero-sub">
+      Vous avez essayé les outils génériques. Ils ne collent pas à votre façon de travailler.<br>
+      Je construis des <strong>systèmes AUTOMATISES sur mesure</strong> qui s'adaptent à vous — pas l'inverse.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Discutons de votre projet</a>
+      <a href="#services" class="btn-ghost">Voir les services</a>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Automatisation IA <span class="dot">·</span></span>
+    <span class="marquee-item">Outils sur mesure <span class="dot">·</span></span>
+    <span class="marquee-item">Consulting & accompagnement <span class="dot">·</span></span>
+    <span class="marquee-item">Workflows intelligents <span class="dot">·</span></span>
+    <span class="marquee-item">Gain de temps réel <span class="dot">·</span></span>
+    <span class="marquee-item">Systèmes qui durent <span class="dot">·</span></span>
+    <span class="marquee-item">Automatisation IA <span class="dot">·</span></span>
+    <span class="marquee-item">Outils sur mesure <span class="dot">·</span></span>
+    <span class="marquee-item">Consulting & accompagnement <span class="dot">·</span></span>
+    <span class="marquee-item">Workflows intelligents <span class="dot">·</span></span>
+    <span class="marquee-item">Gain de temps réel <span class="dot">·</span></span>
+    <span class="marquee-item">Systèmes qui durent <span class="dot">·</span></span>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <div class="section-label">Le problème</div>
+    <p style="font-family: 'Instrument Serif', serif; font-size: clamp(20px, 2.5vw, 26px); max-width: 580px; line-height: 1.5; font-weight: 400;">
+      La plupart des outils promettent beaucoup.<br>Ils livrent rarement ce dont <em style="color: var(--accent)">vous</em> avez besoin.
+    </p>
+    <div class="problem-grid fade-in">
+      <div class="problem-item">
+        <span class="icon">⚙️</span>
+        <strong>Des outils trop génériques</strong>
+        <p>Conçus pour tout le monde = efficaces pour personne. Vous passez plus de temps à configurer qu'à travailler.</p>
+      </div>
+      <div class="problem-item">
+        <span class="icon">🌀</span>
+        <strong>Des workflows qui cassent</strong>
+        <p>Un bout d'automatisation, un bout de Notion, un bout de ChatGPT… et ça tient avec du scotch. Jusqu'au jour où ça lâche.</p>
+      </div>
+      <div class="problem-item">
+        <span class="icon">⏳</span>
+        <strong>Du temps perdu à chercher</strong>
+        <p>Des heures à tester des outils, regarder des tutos, recommencer. Sans vraiment avancer sur ce qui compte.</p>
+      </div>
+      <div class="problem-item">
+        <span class="icon">🧠</span>
+        <strong>Une charge cognitive qui s'accumule</strong>
+        <p>Jongler avec trop de systèmes épuise. Un bon outil doit alléger votre charge, pas l'alourdir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-label">Ce que je fais</div>
+
+    <div class="service-card fade-in">
+      <div class="service-number">01</div>
+      <div class="service-content">
+        <h3>Outils Automatisés <span>sur mesure</span></h3>
+        <p class="service-desc">
+          Je conçois et développe des outils automatisés adaptés à votre contexte précis : vos données, vos processus, votre équipe. Pas un template. Pas du copier-coller. Un système pensé pour vous, qui s'intègre dans votre quotidien sans friction.
+        </p>
+        <div class="service-tags">
+          <span class="tag">Automatisation</span>
+          <span class="tag">Intégrations IA</span>
+          <span class="tag">Workflows</span>
+          <span class="tag highlight">Sur mesure</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="service-card fade-in">
+      <div class="service-number">02</div>
+      <div class="service-content">
+        <h3>Consulting <span>& accompagnement</span></h3>
+        <p class="service-desc">
+          Vous n'avez pas besoin d'un énième outil — vous avez besoin d'un regard extérieur qui comprend l'automatisation et vos enjeux. Je vous aide à clarifier votre stratégie, identifier les bons leviers, et avancer sans vous perdre dans la complexité.
+        </p>
+        <div class="service-tags">
+          <span class="tag">Audit & diagnostic</span>
+          <span class="tag">Stratégie IA</span>
+          <span class="tag">Suivi & itération</span>
+          <span class="tag highlight">1-to-1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+  <div class="container">
+    <div class="section-label" style="color: var(--accent)">Comment ça marche</div>
+    <div class="steps">
+      <div class="step fade-in">
+        <div class="step-num">// 01</div>
+        <h4>On discute</h4>
+        <p>Un appel de 30 min pour comprendre votre situation, vos blocages, ce que vous voulez vraiment.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">// 02</div>
+        <h4>Je propose</h4>
+        <p>Une proposition claire, sans jargon. Ce qu'on fait, pourquoi, et ce que vous en tirez concrètement.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">// 03</div>
+        <h4>On construit</h4>
+        <p>Je développe en itérant avec vous. Pas de surprise, pas de livraison dans 3 mois sans nouvelles.</p>
+      </div>
+      <div class="step fade-in">
+        <div class="step-num">// 04</div>
+        <h4>Vous avancez</h4>
+        <p>Vous reprenez la main sur un système qui tourne. Et je reste disponible si besoin.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO -->
+<section class="manifesto">
+  <div class="container">
+    <p class="manifesto-quote">
+      "Un outil ne doit pas ajouter de la complexité.<br>Il doit vous en <em>enlever</em>."
+    </p>
+    <p class="manifesto-sub">
+      Je construis des systèmes qui disparaissent dans votre quotidien — vous les utilisez sans y penser, et ils font le travail en arrière-plan.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="container">
+    <div class="cta-box fade-in">
+      <h2>Un projet en tête ?<br><em>Parlons-en.</em></h2>
+      <p>Remplissez ce formulaire, je vous réponds sous 24h.</p>
+
+      <div id="form-wrap">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Votre nom</label>
+            <input type="text" id="f-name" class="form-input" placeholder="Marie Dupont">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Votre email</label>
+            <input type="email" id="f-email" class="form-input" placeholder="marie@exemple.com">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ce qui vous amène</label>
+          <select id="f-service" class="form-input">
+            <option value="">— Choisissez —</option>
+            <option>Outils IA & Automatisation sur mesure</option>
+            <option>Consulting & accompagnement</option>
+            <option>Je ne sais pas encore, j'ai besoin d'un avis</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Décrivez votre situation en quelques lignes</label>
+          <textarea id="f-msg" class="form-input form-textarea" placeholder="Mon problème actuel, ce que j'aimerais améliorer…"></textarea>
+        </div>
+        <button onclick="handleSubmit()" class="btn-primary" id="submit-btn">Envoyer →</button>
+        <p id="form-error" class="form-error" style="display:none">Merci de remplir tous les champs.</p>
+      </div>
+
+      <div id="form-success" style="display:none">
+        <div class="success-msg">
+          <span class="success-icon">✓</span>
+          <h3>Message reçu !</h3>
+          <p>Je vous réponds sous 24h. À très vite.</p>
+        </div>
+      </div>
+
+      <p class="cta-note">Réponse sous 24h</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <p>© 2026 Martin@FXience · Outils IA sur mesure</p>
+    <p style="color: var(--border)">Fait avec intention, pas avec un template.</p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Form handling
+  function handleSubmit() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const service = document.getElementById('f-service').value;
+    const msg = document.getElementById('f-msg').value.trim();
+    const error = document.getElementById('form-error');
+
+    if (!name || !email || !service || !msg) {
+      error.style.display = 'block';
+      return;
+    }
+    error.style.display = 'none';
+
+    // Ici vous pouvez brancher un service d'envoi (Formspree, EmailJS, etc.)
+    // Pour l'instant : simulation d'envoi
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, entry.target.dataset.delay || 0);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  doc
