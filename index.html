@@ -796,6 +796,9 @@
           <label class="form-label">Décrivez votre situation en quelques lignes</label>
           <textarea id="f-msg" class="form-input form-textarea" placeholder="Mon problème actuel, ce que j'aimerais améliorer…"></textarea>
         </div>
+        <!-- Honeypot anti-spam (invisible) -->
+        <input type="text" id="f-website" name="website" style="display:none" tabindex="-1" autocomplete="off">
+
         <button onclick="handleSubmit()" class="btn-primary" id="submit-btn">Envoyer →</button>
         <p id="form-error" class="form-error" style="display:none">Merci de remplir tous les champs.</p>
       </div>
@@ -821,14 +824,22 @@
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // Form handling
+<!-- EmailJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init('euKkhDjoCICasPndC');
+
   function handleSubmit() {
     const name = document.getElementById('f-name').value.trim();
     const email = document.getElementById('f-email').value.trim();
     const service = document.getElementById('f-service').value;
     const msg = document.getElementById('f-msg').value.trim();
+    const honeypot = document.getElementById('f-website').value;
     const error = document.getElementById('form-error');
+    const btn = document.getElementById('submit-btn');
+
+    // Anti-spam honeypot
+    if (honeypot) return;
 
     if (!name || !email || !service || !msg) {
       error.style.display = 'block';
@@ -836,10 +847,23 @@
     }
     error.style.display = 'none';
 
-    // Ici vous pouvez brancher un service d'envoi (Formspree, EmailJS, etc.)
-    // Pour l'instant : simulation d'envoi
-    document.getElementById('form-wrap').style.display = 'none';
-    document.getElementById('form-success').style.display = 'block';
+    btn.textContent = 'Envoi en cours…';
+    btn.disabled = true;
+
+    emailjs.send('service_gw59fjr', 'template_2x95yvk', {
+      from_name: name,
+      from_email: email,
+      service_type: service,
+      message: msg
+    }).then(() => {
+      document.getElementById('form-wrap').style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }).catch(() => {
+      btn.textContent = 'Envoyer →';
+      btn.disabled = false;
+      error.textContent = 'Une erreur est survenue. Réessayez ou contactez-moi directement.';
+      error.style.display = 'block';
+    });
   }
 
   // Scroll animations
