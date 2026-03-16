@@ -868,7 +868,7 @@
 
   // Scroll animations
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
         setTimeout(() => {
           entry.target.classList.add('visible');
@@ -877,4 +877,7 @@
     });
   }, { threshold: 0.1 });
 
-  doc
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
