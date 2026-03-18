@@ -7,6 +7,7 @@ Landing page de présentation des services de FXience.
 
 ## Historique
 
+- **v1.2.1** (14 mars 2025) : Réécriture des textes IA (tirets...) + delete bouton nav "prendre contact" en en dessous de 440px
 - **v1.2.0** (14 mars 2025) : Ajout d'un service Site Web/Landing Page
 - **v1.1.0** (14 mars 2025) : Intégration EmailJS + honeypot anti-spam
 - **v1.0.1** (14 mars 2025) : Ajustement tailles de police et couleurs de texte
