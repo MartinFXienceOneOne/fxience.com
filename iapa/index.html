@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Ernould — Portfolio IAPreneur</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0e0e0e;
+    --white: #f8f6f1;
+    --yellow: #f5c842;
+    --yellow-dark: #d4a800;
+    --yellow-bg: rgba(245,200,66,0.12);
+    --muted: #6b6b6b;
+    --border: rgba(0,0,0,0.1);
+    --card-bg: #ffffff;
+    --tag-bg: #f0ede8;
+    --hero-bg: #0e0e0e;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--hero-bg);
+    color: var(--white);
+    padding: 80px 48px 72px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,200,66,0.12);
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: 30%;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,200,66,0.08);
+  }
+
+  .hero-accent {
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--yellow);
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 28px;
+    opacity: 0.85;
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(36px, 5vw, 58px);
+    font-weight: 400;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: rgba(255,255,255,0.45);
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.45);
+    font-weight: 300;
+    margin-bottom: 48px;
+    margin-top: 12px;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hero-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border: 1px solid rgba(245,200,66,0.25);
+    border-radius: 100px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.04em;
+  }
+
+  .hero-tag-accent {
+    border-color: var(--yellow);
+    color: var(--yellow);
+  }
+
+  /* SECTION LABEL */
+  .section {
+    padding: 64px 48px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--yellow-dark);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1.5px;
+    background: var(--yellow);
+    opacity: 0.4;
+  }
+
+  .intro-text {
+    font-size: 19px;
+    font-weight: 300;
+    line-height: 1.75;
+    color: #2a2a2a;
+  }
+
+  .intro-text strong {
+    font-weight: 500;
+    color: var(--black);
+  }
+
+  /* PROJECTS */
+  .projects-section {
+    padding: 0 48px 80px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .project-card {
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card-bg);
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .project-header {
+    padding: 32px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .project-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--yellow-dark);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: var(--black);
+    margin-bottom: 6px;
+  }
+
+  .project-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .project-badge {
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 5px 12px;
+    border-radius: 100px;
+    letter-spacing: 0.06em;
+  }
+
+  .badge-live { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+  .badge-dev { background: #e8eaf6; color: #3949ab; border: 1px solid #c5cae9; }
+  .badge-tdah { background: #fce4ec; color: #c2185b; border: 1px solid #f8bbd0; }
+
+  .project-body {
+    padding: 28px 36px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  @media (max-width: 600px) {
+    .project-body { grid-template-columns: 1fr; }
+    .hero, .section, .projects-section { padding-left: 24px; padding-right: 24px; }
+  }
+
+  .project-desc {
+    font-size: 15px;
+    line-height: 1.75;
+    color: #333;
+    font-weight: 300;
+  }
+
+  .project-meta { display: flex; flex-direction: column; gap: 16px; }
+
+  .meta-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--yellow-dark);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: var(--tag-bg);
+    border-radius: 6px;
+    color: #444;
+  }
+
+  .tag-dark { background: #0e0e0e; color: rgba(255,255,255,0.75); }
+
+  /* MOCKUP */
+  .mockup-wrap { padding: 0 36px 32px; }
+
+  .mockup-bar {
+    background: #0e0e0e;
+    border-radius: 10px 10px 0 0;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-r { background: #ff5f56; }
+  .dot-y { background: #ffbd2e; }
+  .dot-g { background: #27c93f; }
+
+  .mockup-url {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--yellow);
+    margin-left: 8px;
+    opacity: 0.8;
+    text-decoration: none;
+  }
+
+  .mockup-url:hover { opacity: 1; }
+
+  /* APP STAGES MOCKUP */
+  .app-stages {
+    background: #f7f7f5;
+    border: 1px solid #e5e5e5;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+  }
+
+  .app-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .app-title { font-size: 14px; font-weight: 500; }
+  .app-stat-row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .stat-chip {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+
+  .chip-blue { background: #dbeafe; color: #1d4ed8; }
+  .chip-green { background: #dcfce7; color: #15803d; }
+  .chip-red { background: #fee2e2; color: #b91c1c; }
+
+  .stages-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .stages-table th {
+    text-align: left;
+    padding: 6px 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #888;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .stages-table td {
+    padding: 8px 8px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+  }
+
+  .status-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 100px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /* OS TDAH MOCKUP */
+  .app-tdah {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 20px;
+  }
+
+  .tdah-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .tdah-date { font-family: 'DM Mono', monospace; font-size: 11px; color: rgba(255,255,255,0.4); }
+  .tdah-title { font-size: 15px; font-weight: 500; color: #fff; }
+
+  .energy-row { display: flex; gap: 8px; margin-bottom: 16px; }
+
+  .energy-chip {
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 500;
+    flex: 1;
+    text-align: center;
+  }
+
+  .e-high { background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3); }
+  .e-mid { background: rgba(234,179,8,0.2); color: #fde68a; border: 1px solid rgba(234,179,8,0.3); }
+  .e-low { background: rgba(59,130,246,0.2); color: #93c5fd; border: 1px solid rgba(59,130,246,0.3); }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.04);
+    margin-bottom: 6px;
+  }
+
+  .task-check {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    flex-shrink: 0;
+  }
+
+  .task-check.done { background: #22c55e; border-color: #22c55e; }
+
+  .task-text { font-size: 12px; color: rgba(255,255,255,0.75); }
+  .task-text.done-text { color: rgba(255,255,255,0.3); text-decoration: line-through; }
+
+  .pomodoro-bar {
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .pom-label { font-family: 'DM Mono', monospace; font-size: 10px; color: rgba(255,255,255,0.4); }
+  .pom-timer { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; color: #f87171; }
+
+  /* FXIENCE */
+  .fxience-body { padding: 28px 36px 32px; }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 600px) { .service-grid { grid-template-columns: 1fr; } }
+
+  .service-item {
+    padding: 18px 16px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #f9f8f6;
+  }
+
+  .service-icon { font-size: 20px; margin-bottom: 10px; }
+  .service-name { font-size: 13px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
+  .service-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--hero-bg);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 40px 48px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    border-top: 1px solid rgba(245,200,66,0.15);
+  }
+
+  .footer a { color: var(--yellow); text-decoration: none; opacity: 0.8; }
+  .footer a:hover { opacity: 1; }
+
+  .divider {
+    max-width: 860px;
+    margin: 0 auto;
+    height: 1px;
+    background: var(--border);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-accent"></div>
+  <div class="hero-label">Candidature — IAPreneur Academy · Bourse 2026</div>
+  <h1>Martin Ernould<br><em>Consultant IA & Automatisation</em></h1>
+  <p class="hero-sub">Fondateur de FXience · Nivelles, Belgique</p>
+  <div class="hero-tags">
+    <span class="hero-tag hero-tag-accent">Outils IA sur mesure</span>
+    <span class="hero-tag">Automatisation</span>
+    <span class="hero-tag">React · Supabase · N8N</span>
+    <span class="hero-tag">Consulting & accompagnement</span>
+    <span class="hero-tag">TDAH · Neuroatypique</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="section">
+  <div class="section-label">Qui suis-je</div>
+  <p class="intro-text">
+    Je construis des <strong>outils IA concrets</strong> — pas des prototypes qui restent dans un tiroir. Consultant indépendant sous la marque <strong>FXience</strong>, j'ai développé deux projets réels : une application de gestion de stages pour une ASBL, et un système de productivité pensé pour les cerveaux TDAH. Ces projets résolvent de vrais problèmes, pour de vrais utilisateurs.
+  </p>
+</div>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<div class="projects-section" style="padding-top: 64px;">
+  <div class="section-label" style="max-width:100%">Projets réalisés</div>
+
+  <!-- PROJECT 1: FXIENCE -->
+  <div class="project-card">
+    <div class="project-header">
+      <div>
+        <div class="project-number">01 / 03</div>
+        <div class="project-title">FXience</div>
+        <div class="project-subtitle">Marque de consulting IA & automatisation — active depuis 2026</div>
+      </div>
+      <span class="project-badge badge-live">Live</span>
+    </div>
+    <div class="fxience-body">
+      <p class="project-desc">
+        Site web professionnel déployé, formulaire de contact intégré via EmailJS, positionnement clair sur deux offres : outils IA sur mesure et consulting/accompagnement. Premiers contacts clients obtenus.
+      </p>
+      <div class="service-grid">
+        <div class="service-item">
+          <div class="service-icon">⚙️</div>
+          <div class="service-name">Outils IA & Automatisation</div>
+          <div class="service-desc">Systèmes personnalisés intégrés dans le quotidien client</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">🧭</div>
+          <div class="service-name">Consulting & Accompagnement</div>
+          <div class="service-desc">Stratégie IA, audit, suivi itératif 1-to-1</div>
+        </div>
+        <div class="service-item">
+          <div class="service-icon">🌐</div>
+          <div class="service-name">Sites qui travaillent pour vous</div>
+          <div class="service-desc">Landing pages orientées conversion, sans template</div>
+        </div>
+      </div>
+      <div class="tags" style="margin-top:20px;">
+        <span class="tag">GitHub Pages</span>
+        <span class="tag">EmailJS</span>
+        <span class="tag">HTML / CSS</span>
+        <span class="tag">fxience.com</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 2: APP STAGES -->
+  <div class="project-card">
+    <div class="project-header">
+      <div>
+        <div class="project-number">02 / 03</div>
+        <div class="project-title">App Stages I&C</div>
+        <div class="project-subtitle">Gestion complète du cycle de vie des participants — ASBL réelle</div>
+      </div>
+      <span class="project-badge badge-dev">En développement</span>
+    </div>
+    <div class="project-body">
+      <div>
+        <p class="project-desc">
+          Application sur mesure remplaçant un système Excel, Tally, Notion instable. Gère l'inscription, la confirmation, le suivi des participants et la partie financière. Base de données unique (Supabase), deux espaces de travail filtrés, contrôle d'accès au niveau applicatif.
+        </p>
+        <div class="tags" style="margin-top: 20px;">
+          <span class="tag tag-dark">Supabase</span>
+          <span class="tag tag-dark">React</span>
+          <span class="tag">Tally (formulaires)</span>
+          <span class="tag">Gestion financière</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="meta-block">
+          <div class="meta-label">Problème résolu</div>
+          <p style="font-size:13px; color:#444; line-height:1.6;">Les utilisateurs pouvaient modifier la structure des fichiers Excel et de la DB Notion et corrompre les données. L'app apporte un contrôle total.</p>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Client réel</div>
+          <p style="font-size:13px; color:#444;">ASBL I&C — usage en production prévu</p>
+        </div>
+      </div>
+    </div>
+    <div class="mockup-wrap">
+      <div class="mockup-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <a href="https://iapa.fxience.com" target="_blank" class="mockup-url">iapa.fxience.com</a>
+      </div>
+      <div class="app-stages">
+        <div class="app-topbar">
+          <span class="app-title">Gestion des stages — Session printemps 2026</span>
+          <div class="app-stat-row">
+            <span class="stat-chip chip-blue">24 inscrits</span>
+            <span class="stat-chip chip-green">18 confirmés</span>
+            <span class="stat-chip chip-red">2 désistements</span>
+          </div>
+        </div>
+        <table class="stages-table">
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Stage</th>
+              <th>Dates</th>
+              <th>Statut</th>
+              <th>Paiement</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sophie M.</td>
+              <td>Communication</td>
+              <td>14–18 avr.</td>
+              <td><span class="status-pill" style="background:#dcfce7;color:#15803d;">Confirmée</span></td>
+              <td><span class="status-pill" style="background:#dbeafe;color:#1d4ed8;">Payé</span></td>
+            </tr>
+            <tr>
+              <td>Lucas D.</td>
+              <td>Leadership</td>
+              <td>7–11 avr.</td>
+              <td><span class="status-pill" style="background:#dcfce7;color:#15803d;">Confirmé</span></td>
+              <td><span class="status-pill" style="background:#fef9c3;color:#854d0e;">En attente</span></td>
+            </tr>
+            <tr>
+              <td>Emma V.</td>
+              <td>Communication</td>
+              <td>14–18 avr.</td>
+              <td><span class="status-pill" style="background:#fee2e2;color:#b91c1c;">Désistement</span></td>
+              <td><span class="status-pill" style="background:#f3f4f6;color:#6b7280;">—</span></td>
+            </tr>
+            <tr>
+              <td>Nathan B.</td>
+              <td>Créativité</td>
+              <td>28 avr.–2 mai</td>
+              <td><span class="status-pill" style="background:#fef9c3;color:#854d0e;">En attente</span></td>
+              <td><span class="status-pill" style="background:#f3f4f6;color:#6b7280;">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 3: OS TDAH -->
+  <div class="project-card">
+    <div class="project-header">
+      <div>
+        <div class="project-number">03 / 03</div>
+        <div class="project-title">OS TDAH</div>
+        <div class="project-subtitle">Système de productivité conçu pour les cerveaux neuroatypiques</div>
+      </div>
+      <span class="project-badge badge-tdah">Produit SaaS</span>
+    </div>
+    <div class="project-body">
+      <div>
+        <p class="project-desc">
+          Application web React qui remplace les to-do lists classiques par un système basé sur l'énergie et la dopamine. Routines par jour, timer Pomodoro intégré, filtrage intelligent. Né d'un besoin personnel, conçu pour une audience francophone TDAH adulte.
+        </p>
+        <div class="tags" style="margin-top: 20px;">
+          <span class="tag tag-dark">React + Vite</span>
+          <span class="tag tag-dark">Tailwind CSS</span>
+          <span class="tag">localStorage → Supabase</span>
+          <span class="tag">Pomodoro</span>
+          <span class="tag">Énergie / Dopamine</span>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="meta-block">
+          <div class="meta-label">Philosophie</div>
+          <p style="font-size:13px; color:#444; line-height:1.6;">Les cerveaux TDAH ne manquent pas de discernement. Ils manquent d'un système de lancement. OS TDAH est ce système.</p>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Marché cible</div>
+          <p style="font-size:13px; color:#444;">Adultes francophones TDAH 25–35 ans · Modèle SaaS en cours de structuration</p>
+        </div>
+      </div>
+    </div>
+    <div class="mockup-wrap">
+      <div class="mockup-bar" style="background:#16163a;">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <a href="https://iapa.fxience.com" target="_blank" class="mockup-url">iapa.fxience.com</a>
+      </div>
+      <div class="app-tdah">
+        <div class="tdah-header">
+          <span class="tdah-title">Ma journée</span>
+          <span class="tdah-date">Mardi 25 mars 2026</span>
+        </div>
+        <div class="energy-row">
+          <div class="energy-chip e-high">HAUTE énergie</div>
+          <div class="energy-chip e-mid">MOYENNE</div>
+          <div class="energy-chip e-low">BASSE énergie</div>
+        </div>
+        <div class="task-item">
+          <div class="task-check done"></div>
+          <span class="task-text done-text">Relire le script vidéo IAPreneur</span>
+        </div>
+        <div class="task-item">
+          <div class="task-check"></div>
+          <span class="task-text">Finaliser le mockup HTML portfolio</span>
+        </div>
+        <div class="task-item">
+          <div class="task-check"></div>
+          <span class="task-text">Enregistrer la démo Loom</span>
+        </div>
+        <div class="task-item">
+          <div class="task-check"></div>
+          <span class="task-text">Répondre aux messages réseau</span>
+        </div>
+        <div class="pomodoro-bar">
+          <span class="pom-label">Pomodoro en cours</span>
+          <span class="pom-timer">18:42</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <span>Martin Ernould · <a href="https://fxience.com" target="_blank">fxience.com</a> · Belgique · 2026</span>
+</div>
+
+</body>
+</html>
